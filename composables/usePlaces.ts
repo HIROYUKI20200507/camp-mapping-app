@@ -30,7 +30,7 @@ export const usePlaceData = () => {
      * radius: 場所の結果を返す距離（メートル単位）を定義します。最大許容半径は50000メートルです
      */
     const { data: resPlaces } = await useFetch(
-      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${}&keyword=${inputTextStr.value}&radius=300&language=ja`
+      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&keyword=${inputTextStr.value}&radius=300&language=ja`
     );
 
     /** FIXME: 一旦anyで型定義 */

@@ -20,6 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
+      resasApiKey: process.env.RESAS_API_KEY,
     },
   },
   nitro: {
