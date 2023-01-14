@@ -4,7 +4,8 @@ import InputText from "~~/components/Basic/InputText.vue";
 import Card from "~/Components/Basic/Card.vue";
 
 const { fetchPlaces, fetchPlacesList, inputTextStr } = usePlaceData();
-const { fetchPrefectures, fetchPrefectureList } = getPrefectureData();
+const { fetchPrefectures, fetchPrefectureList, inputPref, fetchGeocode } =
+  getPrefectureData();
 
 fetchPrefectures();
 
@@ -15,6 +16,11 @@ const onSubmit = async () => {
 const inputText = (val: string) => {
   inputTextStr.value = val;
 };
+
+const onChange = async (val: string) => {
+  inputPref.name = val;
+  await fetchGeocode();
+};
 </script>
 
 <template>
@@ -23,7 +29,10 @@ const inputText = (val: string) => {
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
           <div class="max-w-sm">
-            <IconSelect :values="fetchPrefectureList"></IconSelect>
+            <IconSelect
+              :values="fetchPrefectureList"
+              @on-change="onChange"
+            ></IconSelect>
           </div>
           <div>
             <InputText @onChange="inputText" :inputValue="''"></InputText>
