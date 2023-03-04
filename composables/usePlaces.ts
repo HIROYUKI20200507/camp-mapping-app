@@ -19,7 +19,14 @@ export const usePlaceData = () => {
   ]);
   const inputTextStr = ref("");
 
-  const fetchPlaces = async (options = {}) => {
+  /**
+   * @param location 緯度経度
+   * @param options 検索オプション
+   */
+  const fetchPlaces = async (
+    location: { lat: number; lng: number },
+    options = {}
+  ) => {
     const _urlPlaces = "/google/api/place/nearbysearch/json?";
 
     /**
@@ -30,7 +37,7 @@ export const usePlaceData = () => {
      * radius: 場所の結果を返す距離（メートル単位）を定義します。最大許容半径は50000メートルです
      */
     const { data: resPlaces } = await useFetch(
-      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&keyword=${inputTextStr.value}&radius=300&language=ja`
+      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${location.lat},${location.lng}&keyword=${inputTextStr.value}&radius=5000&language=ja&types=cafe`
     );
 
     /** FIXME: 一旦anyで型定義 */

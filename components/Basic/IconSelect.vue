@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { emit } from "process";
-
 interface Props {
   values: {
     id: number;
@@ -8,14 +6,18 @@ interface Props {
   }[];
 }
 interface Emits {
-  (e: "onChange", newValue: string): void;
+  (e: "onChange", newValue: { id: number; name: string }): void;
 }
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
 
 const onChange = (e: Event) => {
-  emits("onChange", (e.target as HTMLInputElement).value);
+  const selectedOption = e.target as HTMLSelectElement;
+  const selectedValue =
+    selectedOption.options[selectedOption.selectedIndex].value;
+  const parsedValue = JSON.parse(selectedValue);
+  emits("onChange", parsedValue);
 };
 </script>
 
@@ -24,7 +26,7 @@ const onChange = (e: Event) => {
     <template v-if="values.length">
       <select @change="onChange">
         <template v-for="value in values" :key="value.id">
-          <option :value="value.name">
+          <option :value="JSON.stringify({ id: value.id, name: value.name })">
             {{ value.name }}
           </option>
         </template>

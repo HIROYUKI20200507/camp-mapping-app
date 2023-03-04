@@ -4,21 +4,29 @@ import InputText from "~~/components/Basic/InputText.vue";
 import Card from "~/Components/Basic/Card.vue";
 
 const { fetchPlaces, fetchPlacesList, inputTextStr } = usePlaceData();
-const { fetchPrefectures, fetchPrefectureList, inputPref, fetchGeocode } =
-  getPrefectureData();
+const {
+  fetchPrefectures,
+  fetchPrefectureList,
+  inputPref,
+  fetchGeocode,
+  selectedPrefLocation,
+} = getPrefectureData();
 
 fetchPrefectures();
 
 const onSubmit = async () => {
-  await fetchPlaces();
+  await fetchPlaces(selectedPrefLocation);
 };
 
 const inputText = (val: string) => {
   inputTextStr.value = val;
 };
 
-const onChange = async (val: string) => {
-  inputPref.name = val;
+const onChange = async (val: any) => {
+  inputPref.id = val.id;
+  inputPref.name = val.name;
+  console.log(inputPref);
+
   await fetchGeocode();
 };
 </script>
