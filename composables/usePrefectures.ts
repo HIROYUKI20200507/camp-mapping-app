@@ -1,31 +1,52 @@
+interface CityData {
+  id: number;
+  name: string;
+}
+
+interface PrefectureData {
+  id: number;
+  name: string;
+}
+
+interface SelectedPrefectureLocation {
+  lat: number;
+  lng: number;
+}
+
+interface InputPrefecture {
+  id: number;
+  name: string;
+}
+
+interface InputCity {
+  id: number;
+  name: string;
+}
+
+interface PrefectureDataResponse {
+  result: Array<{
+    prefCode: number;
+    prefName: string;
+  }>;
+}
+
+interface CityDataResponse {
+  result: Array<{
+    prefCode: number;
+    cityCode: string;
+    cityName: string;
+    bigCityFlag: string;
+  }>;
+}
+
 export const getPrefectureData = () => {
   const runtimeConfig = useRuntimeConfig();
 
-  const fetchPrefectureList = ref([
-    {
-      id: 0 as number,
-      name: "" as string,
-    },
-  ]);
-
-  const fetchCitiesList = ref([
-    {
-      id: 0 as number,
-      name: "" as string,
-    },
-  ]);
-
-  const inputPref = reactive({
-    id: 0 as number,
-    name: "" as string,
-  });
-
-  const inputCity = reactive({
-    id: 0 as number,
-    name: "" as string,
-  });
-
-  const selectedPrefLocation = reactive({
+  const fetchPrefectureList: Ref<PrefectureData[]> = ref([{ id: 0, name: "" }]);
+  const fetchCitiesList: Ref<CityData[]> = ref([{ id: 0, name: "" }]);
+  const inputPref: InputPrefecture = reactive({ id: 0, name: "" });
+  const inputCity: InputCity = reactive({ id: 0, name: "" });
+  const selectedPrefLocation: SelectedPrefectureLocation = reactive({
     lat: 0,
     lng: 0,
   });

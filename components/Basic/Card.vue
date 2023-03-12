@@ -8,13 +8,15 @@ interface Props {
     userRatingsTotal: number;
   }[];
 }
+
 const props = defineProps<Props>();
 </script>
+
 <template>
   <div
     v-for="item in props.placesList"
-    class="max-w-sm rounded overflow-hidden shadow-lg"
     :key="item.id"
+    class="max-w-sm rounded overflow-hidden shadow-lg"
   >
     <!-- <img class="w-full" :src="" :alt="item.name" /> -->
     <div class="px-6 py-2">
@@ -46,12 +48,12 @@ const props = defineProps<Props>();
       >
     </div>
     <div v-if="item.types" class="px-6 pt-4 pb-2">
-      <template v-for="type in item.types" :key="`${type}-${item.id}`">
-        <span
-          class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-          >{{ type }}</span
-        >
-      </template>
+      <span
+        v-for="type in item.types"
+        :key="type"
+        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+        >{{ type }}</span
+      >
     </div>
   </div>
 </template>

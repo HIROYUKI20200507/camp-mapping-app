@@ -1,10 +1,12 @@
-type FetchPlacesList = {
+interface PlaceData {
   id: number;
   name: string;
   score: number;
   types: string[];
   userRatingsTotal: number;
-}[];
+}
+
+type FetchPlacesList = PlaceData[];
 
 export const usePlaceData = () => {
   const runtimeConfig = useRuntimeConfig();
@@ -18,7 +20,7 @@ export const usePlaceData = () => {
     },
   ]);
   const inputTextStr = ref("");
-
+  
   /**
    * @param location 緯度経度
    * @param options 検索オプション
