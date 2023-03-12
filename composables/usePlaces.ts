@@ -20,7 +20,7 @@ export const usePlaceData = () => {
     },
   ]);
   const inputTextStr = ref("");
-  
+
   /**
    * @param location 緯度経度
    * @param options 検索オプション

@@ -50,11 +50,10 @@ const onChangeCity = async (val: any) => {
         <div class="flex items-center gap-3">
           <PrefSelect :values="fetchPrefectureList" @on-change="onChangePref" />
           <CitySelect :values="fetchCitiesList" @on-change="onChangeCity" />
-          <div>
-            <InputText @onChange="inputText" :inputValue="''" />
-          </div>
+          <InputText @onChange="inputText" :inputValue="''" />
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded"
+            type="submit"
           >
             検索
           </button>

@@ -28,7 +28,7 @@ const InputText = computed({
         class="inline-block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
         id="grid-text"
         type="text"
-        placeholder="検索エリア"
+        placeholder="フリーワード"
       />
     </div>
   </div>
