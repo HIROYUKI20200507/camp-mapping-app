@@ -1,32 +1,40 @@
 <script setup lang="ts">
-interface Props {
-  values: {
-    id: number;
-    name: string;
-  }[];
-}
-interface Emits {
-  (e: "onChange", newValue: { id: number; name: string }): void;
-}
+const prefectureStore = usePrefectureStore();
+const { state, updatePref, fetchPrefectures, fetchCities, fetchGeocode } =
+  prefectureStore;
 
-const props = defineProps<Props>();
-const emits = defineEmits<Emits>();
+onMounted(async () => {
+  await fetchPrefectures;
+});
 
-const onChange = (e: Event) => {
+const onChange = async (e: Event) => {
   const selectedOption = e.target as HTMLSelectElement;
   const selectedValue =
     selectedOption.options[selectedOption.selectedIndex].value;
-  const parsedValue = JSON.parse(selectedValue);
-  emits("onChange", parsedValue);
+
+  const selectPref: { id: number; name: string }[] =
+    state.value.fetchPrefectureList.filter(
+      (elm: any) => elm.id === +selectedValue
+    );
+
+  const setPref = {
+    id: selectPref[0].id,
+    name: selectPref[0].name,
+  };
+
+  updatePref(setPref);
+
+  await fetchCities;
+  await fetchGeocode;
 };
 </script>
 
 <template>
-  <template v-if="values.length">
+  <template v-if="state.fetchPrefectureList.length">
     <select @change="onChange" class="border rounded px-3 py-2">
-      <option :value="JSON.stringify({ id: 0, name: '' })" selected>--都道府県を選択--</option>
-      <template v-for="value in values" :key="value.id">
-        <option :value="JSON.stringify({ id: value.id, name: value.name })">
+      <option value="0" selected>--都道府県を選択--</option>
+      <template v-for="value in state.fetchPrefectureList" :key="value.id">
+        <option :value="value.id">
           {{ value.name }}
         </option>
       </template>

@@ -23,105 +23,117 @@ interface InputCity {
   name: string;
 }
 
-interface PrefectureDataResponse {
-  result: Array<{
-    prefCode: number;
-    prefName: string;
-  }>;
-}
+type PrefectureState = {
+  fetchPrefectureList: PrefectureData[];
+  fetchCitiesList: CityData[];
+  inputPref: InputPrefecture;
+  inputCity: InputCity;
+  selectedPrefLocation: SelectedPrefectureLocation;
+};
 
-interface CityDataResponse {
-  result: Array<{
-    prefCode: number;
-    cityCode: string;
-    cityName: string;
-    bigCityFlag: string;
-  }>;
-}
+export const usePrefectureStore = () => {
+  const state = useState<PrefectureState>("prefecture_state", () => ({
+    fetchPrefectureList: [{ id: 0, name: "" }],
+    fetchCitiesList: [{ id: 0, name: "" }],
+    inputPref: { id: 0, name: "" },
+    inputCity: { id: 0, name: "" },
+    selectedPrefLocation: {
+      lat: 0,
+      lng: 0,
+    },
+  }));
+  return {
+    state: readonly(state),
+    fetchPrefectures: fetchPrefectures(state),
+    fetchCities: fetchCities(state),
+    fetchGeocode: fetchGeocode(state),
+    updatePref: updatePref(state),
+    updateCity: updateCity(state),
+  };
+};
 
-export const getPrefectureData = () => {
+const updatePref = (state: Ref<PrefectureState>) => (val: InputPrefecture) => {
+  return () => (state.value.inputPref = val);
+};
+
+const updateCity = (state: Ref<PrefectureState>) => (val: InputCity) => {
+  return () => (state.value.inputCity = val);
+};
+
+const fetchPrefectures = async (state: Ref<PrefectureState>) => {
   const runtimeConfig = useRuntimeConfig();
+  const _urlPrefectures =
+    "https://opendata.resas-portal.go.jp/api/v1/prefectures";
 
-  const fetchPrefectureList: Ref<PrefectureData[]> = ref([{ id: 0, name: "" }]);
-  const fetchCitiesList: Ref<CityData[]> = ref([{ id: 0, name: "" }]);
-  const inputPref: InputPrefecture = reactive({ id: 0, name: "" });
-  const inputCity: InputCity = reactive({ id: 0, name: "" });
-  const selectedPrefLocation: SelectedPrefectureLocation = reactive({
-    lat: 0,
-    lng: 0,
+  /**
+   * FYI; https://opendata.resas-portal.go.jp/docs/api/v1/prefectures.html
+   * 必須パラメータ
+   * key: APIキー
+   */
+  const { data: resPrefectures } = await useFetch(_urlPrefectures, {
+    headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
   });
 
-  const fetchPrefectures = async () => {
-    const _urlPrefectures =
-      "https://opendata.resas-portal.go.jp/api/v1/prefectures";
+  /** FIXME: 一旦anyで型定義 */
+  const res = await (resPrefectures.value as any).result;
 
-    /**
-     * FYI; https://opendata.resas-portal.go.jp/docs/api/v1/prefectures.html
-     * 必須パラメータ
-     * key: APIキー
-     */
-    const { data: resPrefectures } = await useFetch(_urlPrefectures, {
+  const newVal = res.map((r: { prefCode: number; prefName: string }) => {
+    return {
+      id: r.prefCode,
+      name: r.prefName,
+    };
+  });
+
+  /**
+   * TODO:
+   * 1. useStateを利用した書き方に変更する
+   * 2. 都道府県が更新されない問題を解決する
+   * 3. 市区町村の方をuseStateを利用した書き方にする
+   */
+  console.log(newVal);
+  return () => (state.value.fetchPrefectureList = newVal);
+};
+
+const fetchCities = async (state: Ref<PrefectureState>) => {
+  const runtimeConfig = useRuntimeConfig();
+  const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
+
+  const { data: resCities } = await useFetch(
+    `${_urlCities}${state.value.inputPref.id}`,
+    {
       headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
-    });
+    }
+  );
 
-    /** FIXME: 一旦anyで型定義 */
-    const res = await (resPrefectures.value as any).result;
+  /** FIXME: 一旦anyで型定義 */
+  const res = await (resCities.value as any).result;
 
-    fetchPrefectureList.value = res.map(
-      (r: { prefCode: number; prefName: string }) => {
-        return {
-          id: r.prefCode,
-          name: r.prefName,
-        };
-      }
-    );
-  };
+  const newVal = res.map(
+    (r: {
+      prefCode: number;
+      cityCode: string;
+      cityName: string;
+      bigCityFlag: string;
+    }) => {
+      return {
+        id: r.cityCode,
+        name: r.cityName,
+      };
+    }
+  );
 
-  const fetchCities = async () => {
-    const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
+  return () => (state.value.fetchCitiesList = newVal);
+};
 
-    const { data: resCities } = await useFetch(`${_urlCities}${inputPref.id}`, {
-      headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
-    });
+const fetchGeocode = async (state: Ref<PrefectureState>) => {
+  const runtimeConfig = useRuntimeConfig();
+  const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
 
-    /** FIXME: 一旦anyで型定義 */
-    const res = await (resCities.value as any).result;
+  const { data: prefData } = await useFetch(
+    `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
+  );
 
-    fetchCitiesList.value = res.map(
-      (r: {
-        prefCode: number;
-        cityCode: string;
-        cityName: string;
-        bigCityFlag: string;
-      }) => {
-        return {
-          id: r.cityCode,
-          name: r.cityName,
-        };
-      }
-    );
-  };
+  const { lat, lng } = (prefData.value as any).results[0].geometry.location;
 
-  const fetchGeocode = async () => {
-    const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
-
-    const { data: prefData } = await useFetch(
-      `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${inputPref.name}${inputCity.name}&components=country:JP`
-    );
-
-    const { lat, lng } = (prefData.value as any).results[0].geometry.location;
-    selectedPrefLocation.lat = lat;
-    selectedPrefLocation.lng = lng;
-  };
-
-  return {
-    fetchPrefectures,
-    fetchPrefectureList,
-    fetchCities,
-    fetchCitiesList,
-    fetchGeocode,
-    inputPref,
-    inputCity,
-    selectedPrefLocation,
-  };
+  return () => (state.value.selectedPrefLocation = { lat, lng });
 };

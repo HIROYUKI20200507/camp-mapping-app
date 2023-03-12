@@ -6,41 +6,22 @@ import Card from "~/Components/Basic/Card.vue";
 
 const { fetchPlaces, fetchPlacesList, inputTextStr } = usePlaceData();
 
-const {
-  fetchPrefectures,
-  fetchPrefectureList,
-  fetchCities,
-  fetchCitiesList,
-  inputPref,
-  inputCity,
-  fetchGeocode,
-  selectedPrefLocation,
-} = getPrefectureData();
-
-fetchPrefectures();
+const prefectureStore = usePrefectureStore();
+const { state, updatePref, fetchCities, fetchGeocode } = prefectureStore;
 
 const onSubmit = async () => {
-  await fetchPlaces(selectedPrefLocation);
+  await fetchPlaces(state.value.selectedPrefLocation);
 };
 
 const inputText = (val: string) => {
   inputTextStr.value = val;
 };
 
-const onChangePref = async (val: any) => {
-  inputPref.id = val.id;
-  inputPref.name = val.name;
-
-  await fetchCities();
-  await fetchGeocode();
-};
-
 const onChangeCity = async (val: any) => {
-  inputCity.id = val.id;
-  inputCity.name = val.name;
+  updatePref(val);
 
-  await fetchCities();
-  await fetchGeocode();
+  await fetchCities;
+  await fetchGeocode;
 };
 </script>
 <template>
@@ -48,8 +29,8 @@ const onChangeCity = async (val: any) => {
     <div class="my-5 text-center">
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
-          <PrefSelect :values="fetchPrefectureList" @on-change="onChangePref" />
-          <CitySelect :values="fetchCitiesList" @on-change="onChangeCity" />
+          <PrefSelect />
+          <TypeSelect />
           <InputText @onChange="inputText" :inputValue="''" />
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded"
