@@ -24,7 +24,7 @@ const onChange = (e: Event) => {
 <template>
   <template v-if="values.length">
     <select @change="onChange" class="border rounded px-3 py-2">
-      <option value="" selected>--市区町村を選択--</option>
+      <option :value="JSON.stringify({ id: 0, name: '' })" selected>--市区町村を選択--</option>
       <template v-for="value in values" :key="value.id">
         <option :value="JSON.stringify({ id: value.id, name: value.name })">
           {{ value.name }}

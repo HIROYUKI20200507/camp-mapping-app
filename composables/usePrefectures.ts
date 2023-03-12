@@ -106,7 +106,7 @@ export const getPrefectureData = () => {
     const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
 
     const { data: prefData } = await useFetch(
-      `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${inputPref.name}&components=country:JP`
+      `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${inputPref.name}${inputCity.name}&components=country:JP`
     );
 
     const { lat, lng } = (prefData.value as any).results[0].geometry.location;
