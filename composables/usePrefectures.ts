@@ -49,12 +49,14 @@ export const getPrefectureData = () => {
         };
       }
     );
+
+    fetchCities();
   };
 
   const fetchCities = async () => {
     const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
 
-    const { data: resCities } = await useFetch(_urlCities, {
+    const { data: resCities } = await useFetch(`${_urlCities}${inputPref.id}`, {
       headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
     });
 
@@ -74,6 +76,8 @@ export const getPrefectureData = () => {
         };
       }
     );
+
+    console.log(fetchCitiesList.value);
   };
 
   const fetchGeocode = async () => {

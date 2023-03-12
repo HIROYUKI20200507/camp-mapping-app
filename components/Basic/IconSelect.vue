@@ -25,6 +25,7 @@ const onChange = (e: Event) => {
   <div class="relative">
     <template v-if="values.length">
       <select @change="onChange">
+        <option value="" selected>--都道府県を選択--</option>
         <template v-for="value in values" :key="value.id">
           <option :value="JSON.stringify({ id: value.id, name: value.name })">
             {{ value.name }}

@@ -37,7 +37,7 @@ export const usePlaceData = () => {
      * radius: 場所の結果を返す距離（メートル単位）を定義します。最大許容半径は50000メートルです
      */
     const { data: resPlaces } = await useFetch(
-      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${location.lat},${location.lng}&keyword=${inputTextStr.value}&radius=5000&language=ja&types=cafe`
+      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${location.lat},${location.lng}&keyword=${inputTextStr.value}&radius=50000&language=ja&types=cafe`
     );
 
     /** FIXME: 一旦anyで型定義 */
@@ -52,11 +52,6 @@ export const usePlaceData = () => {
         userRatingsTotal: r.user_ratings_total,
       };
     });
-  };
-
-  const fetchPlaceMapData = async () => {
-    const _urlGeocode =
-      "https://maps.googleapis.com/maps/api/geocode/json?address=緯度経度情報を調べたい住所components=country:JP&key=（ご自身で取得した）APIキー";
   };
 
   return { fetchPlacesList, fetchPlaces, inputTextStr };
