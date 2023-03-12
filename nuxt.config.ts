@@ -6,7 +6,11 @@ export default defineNuxtConfig({
       "process.env.DEBUG": false,
     },
   },
-  css: ["@/assets/css/tailwind.css"],
+  css: [
+    "@/assets/css/tailwind.css",
+    "@fortawesome/fontawesome-svg-core/styles.css",
+  ],
+  plugins: ["@/plugins/fontawesome.ts"],
   postcss: {
     plugins: {
       tailwindcss: {},

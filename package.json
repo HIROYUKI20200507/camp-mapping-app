@@ -17,6 +17,9 @@
     "vue-gtag-next": "^1.14.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@headlessui/vue": "^1.7.12",
     "@heroicons/vue": "^2.0.16"
   }
