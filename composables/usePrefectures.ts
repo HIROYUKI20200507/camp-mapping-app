@@ -49,8 +49,6 @@ export const getPrefectureData = () => {
         };
       }
     );
-
-    fetchCities();
   };
 
   const fetchCities = async () => {
@@ -76,8 +74,6 @@ export const getPrefectureData = () => {
         };
       }
     );
-
-    console.log(fetchCitiesList.value);
   };
 
   const fetchGeocode = async () => {
@@ -95,6 +91,8 @@ export const getPrefectureData = () => {
   return {
     fetchPrefectures,
     fetchPrefectureList,
+    fetchCities,
+    fetchCitiesList,
     fetchGeocode,
     inputPref,
     selectedPrefLocation,

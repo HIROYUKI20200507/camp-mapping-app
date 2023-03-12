@@ -22,16 +22,14 @@ const onChange = (e: Event) => {
 </script>
 
 <template>
-  <div class="relative">
-    <template v-if="values.length">
-      <select @change="onChange">
-        <option value="" selected>--都道府県を選択--</option>
-        <template v-for="value in values" :key="value.id">
-          <option :value="JSON.stringify({ id: value.id, name: value.name })">
-            {{ value.name }}
-          </option>
-        </template>
-      </select>
-    </template>
-  </div>
+  <template v-if="values.length">
+    <select @change="onChange" class="border rounded px-3 py-2">
+      <option value="" selected>--都道府県を選択--</option>
+      <template v-for="value in values" :key="value.id">
+        <option :value="JSON.stringify({ id: value.id, name: value.name })">
+          {{ value.name }}
+        </option>
+      </template>
+    </select>
+  </template>
 </template>

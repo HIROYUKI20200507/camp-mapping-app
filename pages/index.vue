@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import IconSelect from "~~/components/Basic/IconSelect.vue";
+import PrefSelect from "~~/components/common/PrefSelect.vue";
+import CitySelect from "~~/components/common/CitySelect.vue";
 import InputText from "~~/components/Basic/InputText.vue";
 import Card from "~/Components/Basic/Card.vue";
 
@@ -7,6 +8,8 @@ const { fetchPlaces, fetchPlacesList, inputTextStr } = usePlaceData();
 const {
   fetchPrefectures,
   fetchPrefectureList,
+  fetchCities,
+  fetchCitiesList,
   inputPref,
   fetchGeocode,
   selectedPrefLocation,
@@ -25,8 +28,8 @@ const inputText = (val: string) => {
 const onChange = async (val: any) => {
   inputPref.id = val.id;
   inputPref.name = val.name;
-  console.log(inputPref);
 
+  await fetchCities();
   await fetchGeocode();
 };
 </script>
@@ -36,12 +39,12 @@ const onChange = async (val: any) => {
     <div class="my-5 text-center">
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
-          <div class="max-w-sm">
-            <IconSelect
-              :values="fetchPrefectureList"
-              @on-change="onChange"
-            ></IconSelect>
-          </div>
+          <PrefSelect
+            :values="fetchPrefectureList"
+            @on-change="onChange"
+          ></PrefSelect>
+          <CitySelect :values="fetchCitiesList" @on-change="onChange">
+          </CitySelect>
           <div>
             <InputText @onChange="inputText" :inputValue="''"></InputText>
           </div>
