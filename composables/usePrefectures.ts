@@ -20,6 +20,11 @@ export const getPrefectureData = () => {
     name: "" as string,
   });
 
+  const inputCity = reactive({
+    id: 0 as number,
+    name: "" as string,
+  });
+
   const selectedPrefLocation = reactive({
     lat: 0,
     lng: 0,
@@ -95,6 +100,7 @@ export const getPrefectureData = () => {
     fetchCitiesList,
     fetchGeocode,
     inputPref,
+    inputCity,
     selectedPrefLocation,
   };
 };

@@ -11,6 +11,7 @@ const {
   fetchCities,
   fetchCitiesList,
   inputPref,
+  inputCity,
   fetchGeocode,
   selectedPrefLocation,
 } = getPrefectureData();
@@ -25,9 +26,17 @@ const inputText = (val: string) => {
   inputTextStr.value = val;
 };
 
-const onChange = async (val: any) => {
+const onChangePref = async (val: any) => {
   inputPref.id = val.id;
   inputPref.name = val.name;
+
+  await fetchCities();
+  await fetchGeocode();
+};
+
+const onChangeCity = async (val: any) => {
+  inputCity.id = val.id;
+  inputCity.name = val.name;
 
   await fetchCities();
   await fetchGeocode();
@@ -41,9 +50,9 @@ const onChange = async (val: any) => {
         <div class="flex items-center gap-3">
           <PrefSelect
             :values="fetchPrefectureList"
-            @on-change="onChange"
+            @on-change="onChangePref"
           ></PrefSelect>
-          <CitySelect :values="fetchCitiesList" @on-change="onChange">
+          <CitySelect :values="fetchCitiesList" @on-change="onChangeCity">
           </CitySelect>
           <div>
             <InputText @onChange="inputText" :inputValue="''"></InputText>
