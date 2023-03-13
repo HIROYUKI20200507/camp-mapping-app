@@ -85,12 +85,12 @@ const fetchPrefectures = async (state: Ref<PrefectureState>) => {
   });
 
   /**
+   * 2023/3/12(日)メモ
    * TODO:
    * 1. useStateを利用した書き方に変更する
    * 2. 都道府県が更新されない問題を解決する
    * 3. 市区町村の方をuseStateを利用した書き方にする
    */
-  console.log(newVal);
   return () => (state.value.fetchPrefectureList = newVal);
 };
 

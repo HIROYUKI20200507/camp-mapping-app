@@ -1,11 +1,9 @@
 <script setup lang="ts">
 const prefectureStore = usePrefectureStore();
-const { state, updatePref, fetchPrefectures, fetchCities, fetchGeocode } =
-  prefectureStore;
+const { state, updatePref, fetchCities, fetchGeocode } = prefectureStore;
 
-onMounted(async () => {
-  await fetchPrefectures;
-});
+console.log(state.value.fetchPrefectureList);
+
 
 const onChange = async (e: Event) => {
   const selectedOption = e.target as HTMLSelectElement;
