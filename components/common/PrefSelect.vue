@@ -1,9 +1,12 @@
 <script setup lang="ts">
-const prefectureStore = usePrefectureStore();
-const { state, updatePref, fetchCities, fetchGeocode } = prefectureStore;
+const { state, updatePref, fetchPrefectures, fetchCities, fetchGeocode } =
+  usePrefectureStore();
 
-console.log(state.value.fetchPrefectureList);
-
+// FIXME: ここで初期化すると、都道府県の選択ができなくなる
+// FYI: https://stackoverflow.com/questions/71609027/usefetch-in-onmounted-not-fetching-data-on-direct-link-open-nuxt3
+onMounted(async () => {
+  await fetchPrefectures();
+});
 
 const onChange = async (e: Event) => {
   const selectedOption = e.target as HTMLSelectElement;

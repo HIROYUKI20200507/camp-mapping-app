@@ -60,38 +60,44 @@ const updateCity = (state: Ref<PrefectureState>) => (val: InputCity) => {
   return () => (state.value.inputCity = val);
 };
 
-const fetchPrefectures = async (state: Ref<PrefectureState>) => {
-  const runtimeConfig = useRuntimeConfig();
-  const _urlPrefectures =
-    "https://opendata.resas-portal.go.jp/api/v1/prefectures";
+const fetchPrefectures = (state: Ref<PrefectureState>) => {
+  return async () => {
+    const runtimeConfig = useRuntimeConfig();
+    const _urlPrefectures =
+      "https://opendata.resas-portal.go.jp/api/v1/prefectures";
 
-  /**
-   * FYI; https://opendata.resas-portal.go.jp/docs/api/v1/prefectures.html
-   * 必須パラメータ
-   * key: APIキー
-   */
-  const { data: resPrefectures } = await useFetch(_urlPrefectures, {
-    headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
-  });
+    /**
+     * FYI; https://opendata.resas-portal.go.jp/docs/api/v1/prefectures.html
+     * 必須パラメータ
+     * key: APIキー
+     */
+    const { data: resPrefectures } = await useFetch(_urlPrefectures, {
+      headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
+    });
 
-  /** FIXME: 一旦anyで型定義 */
-  const res = await (resPrefectures.value as any).result;
+    console.log("resPrefectures", resPrefectures);
+    
 
-  const newVal = res.map((r: { prefCode: number; prefName: string }) => {
-    return {
-      id: r.prefCode,
-      name: r.prefName,
-    };
-  });
+    /** FIXME: 一旦anyで型定義 */
+    const res = await (resPrefectures.value as any).result;
 
-  /**
-   * 2023/3/12(日)メモ
-   * TODO:
-   * 1. useStateを利用した書き方に変更する
-   * 2. 都道府県が更新されない問題を解決する
-   * 3. 市区町村の方をuseStateを利用した書き方にする
-   */
-  return () => (state.value.fetchPrefectureList = newVal);
+    const newVal = res.map((r: { prefCode: number; prefName: string }) => {
+      return {
+        id: r.prefCode,
+        name: r.prefName,
+      };
+    });
+
+    /**
+     * 2023/3/12(日)メモ
+     * TODO:
+     * 1. useStateを利用した書き方に変更する
+     * 2. 都道府県が更新されない問題を解決する
+     * 3. 市区町村の方をuseStateを利用した書き方にする
+     */
+
+    state.value.fetchPrefectureList = newVal;
+  };
 };
 
 const fetchCities = async (state: Ref<PrefectureState>) => {
