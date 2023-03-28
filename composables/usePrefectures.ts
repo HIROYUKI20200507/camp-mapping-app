@@ -75,9 +75,6 @@ const fetchPrefectures = (state: Ref<PrefectureState>) => {
       headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
     });
 
-    console.log("resPrefectures", resPrefectures);
-    
-
     /** FIXME: 一旦anyで型定義 */
     const res = await (resPrefectures.value as any).result;
 
