@@ -29,8 +29,8 @@ const onChangeCity = async (val: any) => {
     <div class="my-5 text-center">
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
-          <PrefSelect />  
-          <!-- <CitySelect  /> -->
+          <PrefSelect />
+          <!-- <CitySelect /> -->
           <InputText @onChange="inputText" :inputValue="''" />
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded"

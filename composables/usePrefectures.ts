@@ -97,46 +97,50 @@ const fetchPrefectures = (state: Ref<PrefectureState>) => {
   };
 };
 
-const fetchCities = async (state: Ref<PrefectureState>) => {
-  const runtimeConfig = useRuntimeConfig();
-  const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
+const fetchCities = (state: Ref<PrefectureState>) => {
+  return async () => {
+    const runtimeConfig = useRuntimeConfig();
+    const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
 
-  const { data: resCities } = await useFetch(
-    `${_urlCities}${state.value.inputPref.id}`,
-    {
-      headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
-    }
-  );
+    const { data: resCities } = await useFetch(
+      `${_urlCities}${state.value.inputPref.id}`,
+      {
+        headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
+      }
+    );
 
-  /** FIXME: 一旦anyで型定義 */
-  const res = await (resCities.value as any).result;
+    /** FIXME: 一旦anyで型定義 */
+    const res = await (resCities.value as any).result;
 
-  const newVal = res.map(
-    (r: {
-      prefCode: number;
-      cityCode: string;
-      cityName: string;
-      bigCityFlag: string;
-    }) => {
-      return {
-        id: r.cityCode,
-        name: r.cityName,
-      };
-    }
-  );
+    const newVal = res.map(
+      (r: {
+        prefCode: number;
+        cityCode: string;
+        cityName: string;
+        bigCityFlag: string;
+      }) => {
+        return {
+          id: r.cityCode,
+          name: r.cityName,
+        };
+      }
+    );
 
-  return () => (state.value.fetchCitiesList = newVal);
+    return () => (state.value.fetchCitiesList = newVal);
+  };
 };
 
-const fetchGeocode = async (state: Ref<PrefectureState>) => {
-  const runtimeConfig = useRuntimeConfig();
-  const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
+const fetchGeocode = (state: Ref<PrefectureState>) => {
+  return async () => {
+    const runtimeConfig = useRuntimeConfig();
+    const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
 
-  const { data: prefData } = await useFetch(
-    `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
-  );
+    const { data: prefData } = await useFetch(
+      `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
+    );
 
-  const { lat, lng } = (prefData.value as any).results[0].geometry.location;
+    const { lat, lng } = (prefData.value as any).results[0].geometry.location;
 
-  return () => (state.value.selectedPrefLocation = { lat, lng });
+    return () => (state.value.selectedPrefLocation = { lat, lng });
+  };
 };
