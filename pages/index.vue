@@ -4,24 +4,17 @@ import PrefSelect from "~~/components/common/PrefSelect.vue";
 import InputText from "~~/components/Basic/InputText.vue";
 import Card from "~/Components/Basic/Card.vue";
 
-const { fetchPlaces, fetchPlacesList, inputTextStr } = usePlaceData();
+const { fetchPlaces, updateInputText } = usePlaceStore();
 
 const prefectureStore = usePrefectureStore();
-const { state, updatePref, fetchCities, fetchGeocode } = prefectureStore;
+const { state } = prefectureStore;
 
 const onSubmit = async () => {
   await fetchPlaces(state.value.selectedPrefLocation);
 };
 
 const inputText = (val: string) => {
-  inputTextStr.value = val;
-};
-
-const onChangeCity = async (val: any) => {
-  updatePref(val);
-
-  await fetchCities;
-  await fetchGeocode;
+  updateInputText(val);
 };
 </script>
 <template>
@@ -42,7 +35,7 @@ const onChangeCity = async (val: any) => {
       </form>
     </div>
     <div class="grid grid-cols-3 gap-5">
-      <Card :placesList="fetchPlacesList" />
+      <Card />
     </div>
   </div>
 </template>

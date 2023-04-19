@@ -1,20 +1,10 @@
 <script setup lang="ts">
-interface Props {
-  placesList: {
-    id: number;
-    name: string;
-    score: number;
-    types: string[];
-    userRatingsTotal: number;
-  }[];
-}
-
-const props = defineProps<Props>();
+const { state } = usePlaceStore();
 </script>
 
 <template>
   <div
-    v-for="item in props.placesList"
+    v-for="item in state.placesList"
     :key="item.id"
     class="max-w-sm rounded overflow-hidden shadow-lg"
   >

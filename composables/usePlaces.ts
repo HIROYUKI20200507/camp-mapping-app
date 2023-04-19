@@ -6,29 +6,40 @@ interface PlaceData {
   userRatingsTotal: number;
 }
 
-type FetchPlacesList = PlaceData[];
+interface PlaceState {
+  placesList: PlaceData[];
+  inputTextStr: string;
+}
 
-export const usePlaceData = () => {
-  const runtimeConfig = useRuntimeConfig();
-  const fetchPlacesList = ref<FetchPlacesList>([
-    {
-      id: 0,
-      name: "sample",
-      score: 5,
-      types: ["food"],
-      userRatingsTotal: 10,
-    },
-  ]);
-  const inputTextStr = ref("");
+export const usePlaceStore = () => {
+  const state = useState<PlaceState>("place_state", () => ({
+    placesList: [{ id: 0, name: "", score: 0, types: [], userRatingsTotal: 0 }],
+    inputTextStr: "",
+  }));
+  return {
+    state: readonly(state),
+    updatePlacesList: updatePlacesList(state),
+    updateInputText: updateInputText(state),
+    fetchPlaces: fetchPlaces(state),
+  };
+};
 
-  /**
-   * @param location 緯度経度
-   * @param options 検索オプション
-   */
-  const fetchPlaces = async (
-    location: { lat: number; lng: number },
-    options = {}
-  ) => {
+const updatePlacesList = (state: Ref<PlaceState>) => (val: PlaceData[]) => {
+  return () => (state.value.placesList = val);
+};
+
+const updateInputText = (state: Ref<PlaceState>) => (val: string) => {
+  return () => (state.value.inputTextStr = val);
+};
+
+/**
+ * @param location 緯度経度
+ * @param options 検索オプション
+ */
+
+const fetchPlaces = (state: Ref<PlaceState>) => {
+  return async (location: { lat: number; lng: number }, options = {}) => {
+    const runtimeConfig = useRuntimeConfig();
     const _urlPlaces = "/google/api/place/nearbysearch/json?";
 
     /**
@@ -39,22 +50,21 @@ export const usePlaceData = () => {
      * radius: 場所の結果を返す距離（メートル単位）を定義します。最大許容半径は50000メートルです
      */
     const { data: resPlaces } = await useFetch(
-      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${location.lat},${location.lng}&keyword=${inputTextStr.value}&radius=50000&language=ja&types=cafe`
+      `${_urlPlaces}key=${runtimeConfig.public.googleApiKey}&location=${location.lat},${location.lng}&keyword=${state.value.inputTextStr}&radius=50000&language=ja&types=cafe`
     );
 
     /** FIXME: 一旦anyで型定義 */
     const res = (resPlaces.value as any).results;
 
-    fetchPlacesList.value = res.map((r: any, i: number) => {
-      return {
-        id: i,
-        name: r.name,
-        score: r.rating,
-        types: r.types,
-        userRatingsTotal: r.user_ratings_total,
-      };
-    });
+    return () =>
+      (state.value.placesList = res.map((r: any, i: number) => {
+        return {
+          id: i,
+          name: r.name,
+          score: r.rating,
+          types: r.types,
+          userRatingsTotal: r.user_ratings_total,
+        };
+      }));
   };
-
-  return { fetchPlacesList, fetchPlaces, inputTextStr };
 };

@@ -22,8 +22,8 @@ const onChange = async (e: Event) => {
 
   updatePref(setPref);
 
-  await fetchCities;
-  await fetchGeocode;
+  fetchCities;
+  fetchGeocode;
 };
 </script>
 
