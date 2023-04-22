@@ -52,12 +52,12 @@ export const usePrefectureStore = () => {
   };
 };
 
-const updatePref = (state: Ref<PrefectureState>) => (val: InputPrefecture) => {
-  return () => (state.value.inputPref = val);
+const updatePref = (state: Ref<PrefectureState>) => {
+  return (val: InputPrefecture) => (state.value.inputPref = val);
 };
 
-const updateCity = (state: Ref<PrefectureState>) => (val: InputCity) => {
-  return () => (state.value.inputCity = val);
+const updateCity = (state: Ref<PrefectureState>) => {
+  return (val: InputCity) => (state.value.inputCity = val);
 };
 
 const fetchPrefectures = (state: Ref<PrefectureState>) => {
@@ -126,21 +126,23 @@ const fetchCities = (state: Ref<PrefectureState>) => {
       }
     );
 
-    return () => (state.value.fetchCitiesList = newVal);
+    state.value.fetchCitiesList = newVal;
   };
 };
 
 const fetchGeocode = (state: Ref<PrefectureState>) => {
   return async () => {
+    console.log(state.value.inputPref);
+
     const runtimeConfig = useRuntimeConfig();
     const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
 
     const { data: prefData } = await useFetch(
-      `${_urlGeocode}key=${runtimeConfig.public.googleGeoCodingApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
+      `${_urlGeocode}key=${runtimeConfig.public.googleApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
     );
 
     const { lat, lng } = (prefData.value as any).results[0].geometry.location;
 
-    return () => (state.value.selectedPrefLocation = { lat, lng });
+    state.value.selectedPrefLocation = { lat, lng };
   };
 };

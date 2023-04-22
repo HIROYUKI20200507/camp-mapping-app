@@ -6,13 +6,12 @@ const { state, updatePref, fetchPrefectures, fetchCities, fetchGeocode } =
 fetchPrefectures();
 
 const onChange = async (e: Event) => {
-  const selectedOption = e.target as HTMLSelectElement;
-  const selectedValue =
-    selectedOption.options[selectedOption.selectedIndex].value;
+  const target = e.target as HTMLSelectElement;
+  const selectedId = target.value;
 
   const selectPref: { id: number; name: string }[] =
     state.value.fetchPrefectureList.filter(
-      (elm: any) => elm.id === +selectedValue
+      (elm: any) => elm.id === +selectedId
     );
 
   const setPref = {

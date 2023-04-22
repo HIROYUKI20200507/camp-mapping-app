@@ -7,9 +7,10 @@ import Card from "~/Components/Basic/Card.vue";
 const { fetchPlaces, updateInputText } = usePlaceStore();
 
 const prefectureStore = usePrefectureStore();
-const { state } = prefectureStore;
+const { state, fetchGeocode } = prefectureStore;
 
 const onSubmit = async () => {
+  await fetchGeocode();
   await fetchPlaces(state.value.selectedPrefLocation);
 };
 
@@ -20,6 +21,7 @@ const inputText = (val: string) => {
 <template>
   <div>
     <div class="my-5 text-center">
+      <div>{{ state.selectedPrefLocation }}</div>
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
           <PrefSelect />

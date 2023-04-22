@@ -24,12 +24,12 @@ export const usePlaceStore = () => {
   };
 };
 
-const updatePlacesList = (state: Ref<PlaceState>) => (val: PlaceData[]) => {
-  return () => (state.value.placesList = val);
+const updatePlacesList = (state: Ref<PlaceState>) => {
+  return (val: PlaceData[]) => (state.value.placesList = val);
 };
 
-const updateInputText = (state: Ref<PlaceState>) => (val: string) => {
-  return () => (state.value.inputTextStr = val);
+const updateInputText = (state: Ref<PlaceState>) => {
+  return (val: string) => (state.value.inputTextStr = val);
 };
 
 /**
