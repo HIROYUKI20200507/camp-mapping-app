@@ -1,6 +1,25 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import { resolve } from "path";
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: "誰でもカンタンに素早く検索できるアプリ｜QuickCamp〜クイキャン〜",
+      htmlAttrs: {
+        lang: "ja",
+      },
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
+      link: [
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "/logo.png",
+        },
+      ],
+    },
+  },
   vite: {
     define: {
       "process.env.DEBUG": false,
