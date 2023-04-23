@@ -21,7 +21,6 @@ const inputText = (val: string) => {
 <template>
   <div>
     <div class="my-5 text-center">
-      <div>{{ state.selectedPrefLocation }}</div>
       <form action="" @submit.prevent="onSubmit">
         <div class="flex items-center gap-3">
           <PrefSelect />

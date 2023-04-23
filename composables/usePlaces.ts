@@ -56,15 +56,14 @@ const fetchPlaces = (state: Ref<PlaceState>) => {
     /** FIXME: 一旦anyで型定義 */
     const res = (resPlaces.value as any).results;
 
-    return () =>
-      (state.value.placesList = res.map((r: any, i: number) => {
-        return {
-          id: i,
-          name: r.name,
-          score: r.rating,
-          types: r.types,
-          userRatingsTotal: r.user_ratings_total,
-        };
-      }));
+    state.value.placesList = res.map((r: any, i: number) => {
+      return {
+        id: i,
+        name: r.name,
+        score: r.rating,
+        types: r.types,
+        userRatingsTotal: r.user_ratings_total,
+      };
+    });
   };
 };
