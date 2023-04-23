@@ -132,8 +132,6 @@ const fetchCities = (state: Ref<PrefectureState>) => {
 
 const fetchGeocode = (state: Ref<PrefectureState>) => {
   return async () => {
-    console.log(state.value.inputPref);
-
     const runtimeConfig = useRuntimeConfig();
     const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { state, updatePref, fetchPrefectures, fetchCities, fetchGeocode } =
+const { state, updatePref, fetchPrefectures, fetchCities } =
   usePrefectureStore();
 
 // 都道府県一覧を取得
@@ -20,21 +20,17 @@ const onChange = async (e: Event) => {
   };
 
   updatePref(setPref);
-
-  fetchCities;
-  fetchGeocode;
+  fetchCities();
 };
 </script>
 
 <template>
-  <template v-if="state.fetchPrefectureList.length">
-    <select @change="onChange" class="border rounded px-3 py-2">
-      <option value="0" selected>--都道府県を選択--</option>
-      <template v-for="value in state.fetchPrefectureList" :key="value.id">
-        <option :value="value.id">
-          {{ value.name }}
-        </option>
-      </template>
-    </select>
-  </template>
+  <select @change="onChange" class="border rounded px-3 py-2">
+    <option value="0" selected>--都道府県を選択--</option>
+    <template v-for="value in state.fetchPrefectureList" :key="value.id">
+      <option :value="value.id">
+        {{ value.name }}
+      </option>
+    </template>
+  </select>
 </template>
