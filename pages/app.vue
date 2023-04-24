@@ -2,7 +2,7 @@
 import PrefSelect from "~/components/common/PrefSelect.vue";
 import CitySelect from "~/components/common/CitySelect.vue";
 // import InputText from "~~/components/Basic/InputText.vue";
-import Card from "~/Components/Basic/Card.vue";
+import Card from "~/components/Basic/Card.vue";
 
 const { fetchPlaces, updateInputText } = usePlaceStore();
 
