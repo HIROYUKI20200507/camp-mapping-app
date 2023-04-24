@@ -1,0 +1,1 @@
+import{p as a,A as n,q as o,B as s,o as _}from"./entry.061f4e8d.js";const m=a({__name:"index",async setup(r){let e,t;return[e,t]=n(()=>s("/landing")),await e,t(),(c,i)=>(_(),o("div"))}});export{m as default};
