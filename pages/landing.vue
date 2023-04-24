@@ -45,11 +45,11 @@ onUnmounted(() => {
                   App
                 </nuxt-link>
               </li>
-              <li>
+              <!-- <li>
                 <nuxt-link class="text-white hover:text-blue-300" to="/about">
                   About
                 </nuxt-link>
-              </li>
+              </li> -->
             </ul>
           </nav>
         </div>

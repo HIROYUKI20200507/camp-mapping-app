@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PrefSelect from "~~/components/common/PrefSelect.vue";
-import CitySelect from "~~/components/common/CitySelect.vue";
+import PrefSelect from "~/components/common/PrefSelect.vue";
+import CitySelect from "~/components/common/CitySelect.vue";
 // import InputText from "~~/components/Basic/InputText.vue";
 import Card from "~/Components/Basic/Card.vue";
 
