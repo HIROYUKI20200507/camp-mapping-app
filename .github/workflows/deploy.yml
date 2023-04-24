@@ -21,8 +21,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
-        run: npm run generate
+        run: NUXT_APP_CDN_URL=https://HIROYUKI20200507.github.io/ npm run generate
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
