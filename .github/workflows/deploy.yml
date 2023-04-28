@@ -32,6 +32,6 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_CAMP_MAPPING_APP: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CAMP_MAPPING_APP }}
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "$(firebase login:ci --project ${{ secrets.FIREBASE_PROJECT_ID }})"
+        run: firebase deploy --only hosting --project camp-mapping-app --token "$(firebase login:ci --project camp-mapping-app)"
         env:
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_PROJECT_ID: camp-mapping-app
