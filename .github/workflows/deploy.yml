@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Firebase Hosting
 
 on:
   push:
@@ -18,13 +18,20 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
-        run: NUXT_APP_CDN_URL=https://HIROYUKI20200507.github.io/ npm run generate
+        run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Setup Firebase Service Account
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CAMP_MAPPING_APP }}' > ./firebase-service-account.json
+        env:
+          FIREBASE_SERVICE_ACCOUNT_CAMP_MAPPING_APP: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CAMP_MAPPING_APP }}
+
+      - name: Deploy to Firebase Hosting
+        run: firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --token "$(firebase login:ci --project ${{ secrets.FIREBASE_PROJECT_ID }})"
+        env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
