@@ -48,6 +48,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    preset: "firebase",
     devProxy: {
       "/google/api/": {
         target: "https://maps.googleapis.com/maps/api/",
