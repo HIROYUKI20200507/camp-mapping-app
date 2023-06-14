@@ -18,25 +18,19 @@ const onSubmit = async () => {
 //   updateInputText(val);
 // };
 </script>
-<template>
-  <div>
-    <div class="my-5 text-center">
-      <form action="" @submit.prevent="onSubmit">
-        <div class="flex items-center gap-3">
-          <PrefSelect />
-          <CitySelect />
-          <!-- <InputText @onChange="inputText" :inputValue="''" /> -->
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded"
-            type="submit"
-          >
-            検索
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="grid grid-cols-3 gap-5">
-      <Card />
-    </div>
-  </div>
+<template lang="pug">
+div
+  .my-5.text-center
+    form(@submit.prevent="onSubmit") 
+      .flex.items-center.gap-3
+        PrefSelect
+        CitySelect
+        //- <!-- InputText(@onChange="inputText" :inputValue="''") -->
+        button(
+          class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded"
+          type="submit"
+        )
+          | 検索
+  .grid.grid-cols-3.gap-5
+    Card
 </template>
