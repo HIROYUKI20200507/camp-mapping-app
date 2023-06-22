@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     "~/Assets": resolve(__dirname, "./assets"),
   },
   runtimeConfig: {
+    googleGeoCodingApiKey: process.env.GOOGLE_API_GEO_CODING_KEY,
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
       googleGeoCodingApiKey: process.env.GOOGLE_API_GEO_CODING_KEY,

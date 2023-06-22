@@ -132,12 +132,12 @@ const fetchCities = (state: Ref<PrefectureState>) => {
 
 const fetchGeocode = (state: Ref<PrefectureState>) => {
   return async () => {
-    const runtimeConfig = useRuntimeConfig();
-    const _urlGeocode = "https://maps.googleapis.com/maps/api/geocode/json?";
-
-    const { data: prefData } = await useFetch(
-      `${_urlGeocode}key=${runtimeConfig.public.googleApiKey}&address=${state.value.inputPref.name}${state.value.inputCity.name}&components=country:JP`
-    );
+    const { data: prefData } = await useFetch("/api/geocode", {
+      method: "POST",
+      body: {
+        address: `${state.value.inputPref.name}${state.value.inputCity.name}`,
+      },
+    });
 
     const { lat, lng } = (prefData.value as any).results[0].geometry.location;
 
