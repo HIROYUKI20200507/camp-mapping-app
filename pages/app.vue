@@ -11,6 +11,7 @@ const { state, fetchGeocode } = prefectureStore;
 
 const onSubmit = async () => {
   await fetchGeocode();
+
   await fetchPlaces(state.value.selectedPrefLocation);
 };
 
