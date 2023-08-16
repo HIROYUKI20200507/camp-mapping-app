@@ -99,20 +99,16 @@ const fetchPrefectures = (state: Ref<PrefectureState>) => {
 
 const fetchCities = (state: Ref<PrefectureState>) => {
   return async () => {
-    const runtimeConfig = useRuntimeConfig();
-    const _urlCities = `https://opendata.resas-portal.go.jp/api/v1/cities?prefCode=`;
+    const { data: cityData } = await useFetch("/api/city", {
+      method: "POST",
+      body: {
+        prefId: `${state.value.inputPref.id}`,
+      },
+    });
 
-    const { data: resCities } = await useFetch(
-      `${_urlCities}${state.value.inputPref.id}`,
-      {
-        headers: { "X-API-KEY": runtimeConfig.public.resasApiKey },
-      }
-    );
+    const { result } = await (cityData.value as any);
 
-    /** FIXME: 一旦anyで型定義 */
-    const res = await (resCities.value as any).result;
-
-    const newVal = res.map(
+    const newVal = result.map(
       (r: {
         prefCode: number;
         cityCode: string;

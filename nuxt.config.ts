@@ -37,6 +37,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     googleGeoCodingApiKey: process.env.GOOGLE_API_GEO_CODING_KEY,
+    resasApiKey: process.env.RESAS_API_KEY,
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
       googleGeoCodingApiKey: process.env.GOOGLE_API_GEO_CODING_KEY,
